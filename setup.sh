@@ -1,16 +1,16 @@
 #!/bin/bash
-dateFromServer=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
-biji=`date +"%Y-%m-%d" -d "$dateFromServer"`
+dateFromServer=$(curl -fsSL https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
+biji=$(date +"%Y-%m-%d" -d "$dateFromServer")
 #########################
 
 BURIQ () {
-    curl -sS https://raw.githubusercontent.com/hokagelegend2025/ijin/main/youtube > /root/tmp
-    data=( `cat /root/tmp | grep -E "^### " | awk '{print $2}'` )
+    curl -sS https://raw.githubusercontent.com/devculturebot/ijin/main/youtube > /root/tmp
+    data=( $(cat /root/tmp | grep -E "^### " | awk '{print $2}') )
     for user in "${data[@]}"
     do
     exp=( `grep -E "^### $user" "/root/tmp" | awk '{print $3}'` )
-    d1=(`date -d "$exp" +%s`)
-    d2=(`date -d "$biji" +%s`)
+    d1=($(date -d "$exp" +%s))
+    d2=($(date -d "$biji" +%s))
     exp2=$(( (d1 - d2) / 86400 ))
     if [[ "$exp2" -le "0" ]]; then
     echo $user > /etc/.$user.ini
@@ -20,9 +20,9 @@ BURIQ () {
     done
     rm -f  /root/tmp
 }
-#https://raw.githubusercontent.com/hokagelegend9999/ijin/main/original 
+#https://raw.githubusercontent.com/devculturebot/ijin/main/original 
 MYIP=$(curl -sS ipv4.icanhazip.com)
-Name=$(curl -sS https://raw.githubusercontent.com/hokagelegend2025/ijin/main/youtube | grep $MYIP | awk '{print $2}')
+Name=$(curl -sS https://raw.githubusercontent.com/devculturebot/ijin/main/youtube | grep $MYIP | awk '{print $2}')
 echo $Name > /usr/local/etc/.$Name.ini
 CekOne=$(cat /usr/local/etc/.$Name.ini)
 
@@ -39,7 +39,7 @@ fi
 
 PERMISSION () {
     MYIP=$(curl -sS ipv4.icanhazip.com)
-    IZIN=$(curl -sS https://raw.githubusercontent.com/hokagelegend2025/ijin/main/youtube | awk '{print $4}' | grep $MYIP)
+    IZIN=$(curl -sS https://raw.githubusercontent.com/devculturebot/ijin/main/youtube | awk '{print $4}' | grep $MYIP)
     if [ "$MYIP" = "$IZIN" ]; then
     Bloman
     else
@@ -71,8 +71,8 @@ if [ "$(systemd-detect-virt)" == "openvz" ]; then
 fi
 
 localip=$(hostname -I | cut -d\  -f1)
-hst=( `hostname` )
-dart=$(cat /etc/hosts | grep -w `hostname` | awk '{print $2}')
+hst=( $(hostname) )
+dart=$(cat /etc/hosts | grep -w $(hostname) | awk '{print $2}')
 if [[ "$hst" != "$dart" ]]; then
 echo "$localip $(hostname)" >> /etc/hosts
 fi
@@ -84,7 +84,7 @@ echo -e "[ ${tyblue}NOTES${NC} ] I need check your headers first.."
 sleep 2
 echo -e "[ ${green}INFO${NC} ] Checking headers"
 sleep 1
-totet=`uname -r`
+totet=$(uname -r)
 REQUIRED_PKG="linux-headers-$totet"
 PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $REQUIRED_PKG|grep "install ok installed")
 echo Checking for $REQUIRED_PKG: $PKG_OK
@@ -119,7 +119,7 @@ else
   echo -e "[ ${green}INFO${NC} ] Oke installed"
 fi
 
-ttet=`uname -r`
+ttet=$(uname -r)
 ReqPKG="linux-headers-$ttet"
 if ! dpkg -s $ReqPKG  >/dev/null 2>&1; then
   rm /root/setup.sh >/dev/null 2>&1 
@@ -172,10 +172,10 @@ exit 0
 fi
 sleep 3
 
-mkdir -p /etc/hokagevpnn
-mkdir -p /etc/hokagevpn/theme
-mkdir -p /var/lib/hokagevpn-pro >/dev/null 2>&1
-echo "IP=" >> /var/lib/hokagevpn-pro/ipvps.conf
+mkdir -p /etc/devculturevpnn
+mkdir -p /etc/devculturevpn/theme
+mkdir -p /var/lib/devculturevpn-pro >/dev/null 2>&1
+echo "IP=" >> /var/lib/devculturevpn-pro/ipvps.conf
 
 if [ -f "/etc/xray/domain" ]; then
 echo ""
@@ -192,7 +192,7 @@ fi
 fi
 
 echo ""
-wget -q https://raw.githubusercontent.com/hokagelegend2025/hokagescript/main/dependencies.sh;chmod +x dependencies.sh;./dependencies.sh
+wget -q https://raw.githubusercontent.com/devculturebot/devculturescript/main/dependencies.sh;chmod +x dependencies.sh;./dependencies.sh
 rm dependencies.sh
 clear
 
@@ -203,40 +203,40 @@ echo "$pp" > /root/domain
 echo "$pp" > /root/scdomain
 echo "$pp" > /etc/xray/domain
 echo "$pp" > /etc/xray/scdomain
-echo "IP=$pp" > /var/lib/hokagevpn-pro/ipvps.conf
+echo "IP=$pp" > /var/lib/devculturevpn-pro/ipvps.conf
 
 #THEME RED
-cat <<EOF>> /etc/hokagevpn/theme/red
+cat <<EOF>> /etc/devculturevpn/theme/red
 BG : \E[40;1;41m
 TEXT : \033[0;31m
 EOF
 #THEME BLUE
-cat <<EOF>> /etc/hokagevpn/theme/blue
+cat <<EOF>> /etc/devculturevpn/theme/blue
 BG : \E[40;1;44m
 TEXT : \033[0;34m
 EOF
 #THEME GREEN
-cat <<EOF>> /etc/hokagevpn/theme/green
+cat <<EOF>> /etc/devculturevpn/theme/green
 BG : \E[40;1;42m
 TEXT : \033[0;32m
 EOF
 #THEME YELLOW
-cat <<EOF>> /etc/hokagevpn/theme/yellow
+cat <<EOF>> /etc/devculturevpn/theme/yellow
 BG : \E[40;1;43m
 TEXT : \033[0;33m
 EOF
 #THEME MAGENTA
-cat <<EOF>> /etc/hokagevpn/theme/magenta
+cat <<EOF>> /etc/devculturevpn/theme/magenta
 BG : \E[40;1;43m
 TEXT : \033[0;33m
 EOF
 #THEME CYAN
-cat <<EOF>> /etc/hokagevpn/theme/cyan
+cat <<EOF>> /etc/devculturevpn/theme/cyan
 BG : \E[40;1;46m
 TEXT : \033[0;36m
 EOF
 #THEME CONFIG
-cat <<EOF>> /etc/hokagevpn/theme/color.conf
+cat <<EOF>> /etc/devculturevpn/theme/color.conf
 blue
 EOF
     
@@ -244,20 +244,20 @@ EOF
 echo -e "$green[INFO]$NC Install SSH & OpenVPN!"
 sleep 2
 clear
-wget https://raw.githubusercontent.com/hokagelegend2025/hokagescript/main/ssh/ssh-vpn.sh && chmod +x ssh-vpn.sh && ./ssh-vpn.sh
+wget https://raw.githubusercontent.com/devculturebot/devculturescript/main/ssh/ssh-vpn.sh && chmod +x ssh-vpn.sh && ./ssh-vpn.sh
 #Instal Xray
 echo -e "$green[INFO]$NC Install Install XRAY!"
 sleep 2
 clear
-wget https://raw.githubusercontent.com/hokagelegend2025/hokagescript/main/xray/ins-xray.sh && chmod +x ins-xray.sh && ./ins-xray.sh
+wget https://raw.githubusercontent.com/devculturebot/devculturescript/main/xray/ins-xray.sh && chmod +x ins-xray.sh && ./ins-xray.sh
 clear
-wget https://raw.githubusercontent.com/hokagelegend9999/original/main/backup/set-br.sh && chmod +x set-br.sh && ./set-br.sh
+wget https://raw.githubusercontent.com/devculturebot/original/main/backup/set-br.sh && chmod +x set-br.sh && ./set-br.sh
 clear
-wget https://raw.githubusercontent.com/hokagelegend9999/original/main/websocket/insshws.sh && chmod +x insshws.sh && ./insshws.sh
+wget https://raw.githubusercontent.com/devculturebot/original/main/websocket/insshws.sh && chmod +x insshws.sh && ./insshws.sh
 clear
 echo -e "$green[INFO]$NC Download Extra Menu"
 sleep 2
-wget https://raw.githubusercontent.com/hokagelegend9999/original/main/update/update.sh && chmod +x update.sh && ./update.sh
+wget https://raw.githubusercontent.com/devculturebot/original/main/update/update.sh && chmod +x update.sh && ./update.sh
 clear
 cat> /root/.profile << END
 # ~/.profile: executed by Bourne-compatible login shells.
@@ -284,7 +284,7 @@ if [ ! -f "/etc/log-create-user.log" ]; then
 echo "Log All Account " > /etc/log-create-user.log
 fi
 history -c
-serverV=$( curl -sS https://raw.githubusercontent.com/hokagelegend9999/ipmini/main/versi  )
+serverV=$( curl -sS https://raw.githubusercontent.com/devculturebot/ipmini/main/versi  )
 echo $serverV > /opt/.ver
 aureb=$(cat /home/re_otm)
 b=11
@@ -297,7 +297,7 @@ fi
 curl -sS ifconfig.me > /etc/myipvps
 
 echo " "
-echo "====================-[HOKAGE LEGEND]-===================="
+echo "====================-[DevCulture]-===================="
 echo ""
 echo "------------------------------------------------------------"
 echo ""  | tee -a log-install.txt
@@ -335,11 +335,11 @@ echo "   - Backup & Restore Data" | tee -a log-install.txt
 echo "   - Full Orders For Various Services" | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
 echo "   >>> About " | tee -a log-install.txt
-echo "   - Script Presented By      : HOKAGE VPN STORE" | tee -a log-install.txt" | tee -a log-install.txt
+echo "   - Script Presented By      : devculture VPN STORE" | tee -a log-install.txt" | tee -a log-install.txt
 echo "   - Contact (Only Text)      : wa.me/087726917005" | tee -a log-install.txt" | tee -a log-install.txt
 echo "------------------------------------------------------------"
 echo ""
-echo "=============-[ HOKAGE LEGEND ]-==============="
+echo "=============-[ DevCulture ]-==============="
 echo -e ""
 echo ""
 echo "" | tee -a log-install.txt
