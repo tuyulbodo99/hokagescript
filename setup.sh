@@ -1,20 +1,33 @@
 #!/bin/bash
 # =================================================================
-#   HokageScript VPS — Setup Script
-#   FIX: hapus PERMISSION/check_license, ganti URL hokagelegend9999/original
-#        ke hokagescript, perbaiki sed tanpa nama file
+#   HokageScript VPS — Full Setup Script  v3.2.0
+#   github.com/tuyulbodo99/hokagescript | @hokagelegend
 # =================================================================
 set -euo pipefail
+mkdir -p /var/log; exec > >(tee -a /var/log/devculture-install.log) 2>&1
 
-HKBASE="https://raw.githubusercontent.com/tuyulbodo99/hokagescript/main"
+LIB_URL="https://raw.githubusercontent.com/tuyulbodo99/hokagescript/main/lib/utils.sh"
+TMP_LIB=$(mktemp /tmp/dc-lib-XXXXX.sh)
+wget -qO "$TMP_LIB" "$LIB_URL" 2>/dev/null || curl -fsSL "$LIB_URL" -o "$TMP_LIB" 2>/dev/null
+source "$TMP_LIB"; rm -f "$TMP_LIB"
 
+setup_trap; check_root; detect_os
+
+BASE_URL="https://raw.githubusercontent.com/tuyulbodo99/hokagescript/main"
+
+clear
 red='\e[1;31m'; green='\e[0;32m'; yell='\e[1;33m'; tyblue='\e[1;36m'; NC='\e[0m'
-green()  { echo -e "\033[32;1m${*}\033[0m"; }
-red()    { echo -e "\033[31;1m${*}\033[0m"; }
-yellow() { echo -e "\033[33;1m${*}\033[0m"; }
+yellow() { echo -e "\\033[33;1m${*}\\033[0m"; }
+tyblue() { echo -e "\\033[36;1m${*}\\033[0m"; }
+green()  { echo -e "\\033[32;1m${*}\\033[0m"; }
+red()    { echo -e "\\033[31;1m${*}\\033[0m"; }
 
-[[ "${EUID}" -ne 0 ]] && { red "You need to run this script as root"; exit 1; }
-[[ "$(systemd-detect-virt 2>/dev/null || echo none)" == "openvz" ]] && { red "OpenVZ is not supported"; exit 1; }
+if [[ "${EUID}" -ne 0 ]]; then
+  echo "You need to run this script as root"; exit 1
+fi
+if [[ "$(systemd-detect-virt 2>/dev/null || echo none)" == "openvz" ]]; then
+  echo "OpenVZ is not supported"; exit 1
+fi
 
 localip=$(hostname -I | cut -d\  -f1)
 hst=$(hostname)
@@ -26,7 +39,7 @@ fi
 mkdir -p /etc/xray
 
 secs_to_human() {
-  echo "Installation time: $(( ${1} / 3600 ))h $(( (${1} / 60) % 60 ))m $(( ${1} % 60 ))s"
+  echo "Installation time : $(( ${1} / 3600 )) hours $(( (${1} / 60) % 60 )) minutes $(( ${1} % 60 )) seconds"
 }
 start=$(date +%s)
 
@@ -35,6 +48,7 @@ sysctl -w net.ipv6.conf.all.disable_ipv6=1     >/dev/null 2>&1 || true
 sysctl -w net.ipv6.conf.default.disable_ipv6=1 >/dev/null 2>&1 || true
 
 cat > /root/.profile << 'PROFILE'
+# ~/.profile
 if [ "$BASH" ]; then
   if [ -f ~/.bashrc ]; then . ~/.bashrc; fi
 fi
@@ -43,17 +57,22 @@ clear
 PROFILE
 chmod 644 /root/.profile
 
+info "Preparing installation..."
 apt-get install -y git curl wget >/dev/null 2>&1
 
-mkdir -p /etc/devculturevpnn /var/lib/devculturevpn-pro
+mkdir -p /etc/devculturevpnn
+mkdir -p /etc/devculturevpn/theme
+mkdir -p /var/lib/devculturevpn-pro
 
 if [[ -f "/etc/xray/domain" ]]; then
-  yellow "Script sudah pernah diinstall sebelumnya."
+  echo ""
+  warn "Script sudah pernah diinstall sebelumnya."
   echo -ne "  Lanjutkan install ulang? (y/n)? "
   read -r answer
   if [[ "$answer" != "y" && "$answer" != "Y" ]]; then
     rm -f /root/setup.sh 2>/dev/null; exit 0
   fi
+  clear
 fi
 
 echo ""
@@ -66,37 +85,46 @@ fi
 echo "$pp" > /root/domain
 echo "$pp" > /root/scdomain
 echo "$pp" > /etc/xray/domain
+echo "$pp" > /etc/xray/scdomain
 echo "IP=$pp" > /var/lib/devculturevpn-pro/ipvps.conf
 
-echo ""
-yellow "Install SSH & OpenVPN..."
-TMP=$(mktemp /tmp/hk-XXXXX.sh)
-wget -qO "$TMP" "${HKBASE}/ssh/ssh-vpn.sh" 2>/dev/null || \
-  curl -fsSL "${HKBASE}/ssh/ssh-vpn.sh" -o "$TMP" 2>/dev/null
-chmod +x "$TMP" && bash "$TMP"; rm -f "$TMP"
+# Setup tema
+for theme in red blue green yellow magenta cyan; do
+  mkdir -p /etc/devculturevpn/theme
+done
+cat > /etc/devculturevpn/theme/color.conf << 'EOF'
+blue
+EOF
 
-echo ""
-yellow "Install Xray..."
-TMP=$(mktemp /tmp/hk-XXXXX.sh)
-wget -qO "$TMP" "${HKBASE}/xray/ins-xray.sh" 2>/dev/null || \
-  curl -fsSL "${HKBASE}/xray/ins-xray.sh" -o "$TMP" 2>/dev/null
-chmod +x "$TMP" && bash "$TMP"; rm -f "$TMP"
+# Install dependencies
+info "Install SSH & OpenVPN..."
+TMP=$(mktemp /tmp/dc-XXXXX.sh)
+safe_dl "${BASE_URL}/ssh/ssh-vpn.sh" "$TMP" && chmod +x "$TMP" && bash "$TMP"
+rm -f "$TMP"
 
-echo ""
-yellow "Install WebSocket..."
-TMP=$(mktemp /tmp/hk-XXXXX.sh)
-wget -qO "$TMP" "${HKBASE}/websocket/insshws.sh" 2>/dev/null || \
-  curl -fsSL "${HKBASE}/websocket/insshws.sh" -o "$TMP" 2>/dev/null
-[[ -s "$TMP" ]] && chmod +x "$TMP" && bash "$TMP" || true; rm -f "$TMP"
+# Install Xray
+info "Install Xray..."
+TMP=$(mktemp /tmp/dc-XXXXX.sh)
+safe_dl "${BASE_URL}/xray/ins-xray.sh" "$TMP" && chmod +x "$TMP" && bash "$TMP"
+rm -f "$TMP"
+clear
 
-echo ""
-yellow "Download Extra Menu..."
-TMP=$(mktemp /tmp/hk-XXXXX.sh)
-wget -qO "$TMP" "${HKBASE}/update/update.sh" 2>/dev/null || \
-  curl -fsSL "${HKBASE}/update/update.sh" -o "$TMP" 2>/dev/null
-chmod +x "$TMP" && bash "$TMP"; rm -f "$TMP"
+# Install WebSocket
+info "Install WebSocket..."
+TMP=$(mktemp /tmp/dc-XXXXX.sh)
+safe_dl "${BASE_URL}/websocket/insshws.sh" "$TMP" && chmod +x "$TMP" && bash "$TMP"
+rm -f "$TMP"
+clear
+
+# Download & run update menu
+info "Download Extra Menu..."
+TMP=$(mktemp /tmp/dc-XXXXX.sh)
+safe_dl "${BASE_URL}/update/update-devculture.sh" "$TMP" && chmod +x "$TMP" && bash "$TMP"
+rm -f "$TMP"
+clear
 
 cat > /root/.profile << 'PROFILE'
+# ~/.profile
 if [ "$BASH" ]; then
   if [ -f ~/.bashrc ]; then . ~/.bashrc; fi
 fi
@@ -106,18 +134,42 @@ menu
 PROFILE
 chmod 644 /root/.profile
 
+rm -f /root/log-install.txt 2>/dev/null
 [[ ! -f "/etc/log-create-user.log" ]] && echo "Log All Account" > /etc/log-create-user.log
+
+# Ambil waktu reboot
+aureb=7
+gg="AM"
 curl -sS ifconfig.me > /etc/myipvps 2>/dev/null || hostname -I | awk '{print $1}' > /etc/myipvps
 
 echo ""
-echo "====================-[HokageScript]-===================="
-echo "   - OpenSSH    : 22, 200, 500, 40000, 51443, 58080"
-echo "   - Stunnel4   : 222, 447, 777"
-echo "   - Dropbear   : 109, 143"
-echo "   - Badvpn     : 7100-7900"
-echo "   - Nginx      : 81"
-echo "   - Xray       : 80, 443"
-echo "========================================================="
+echo "====================-[DevCulture]-===================="
+echo ""
+echo "   >>> Service & Port"
+echo "   - OpenSSH                 : 22, 200, 500, 40000, 51443, 58080"
+echo "   - SSH SSL Websocket       : 443"
+echo "   - Stunnel4                : 447, 777"
+echo "   - Dropbear                : 109, 143"
+echo "   - Badvpn                  : 7100-7900"
+echo "   - Nginx                   : 81"
+echo "   - XRAY Vmess TLS          : 443"
+echo "   - XRAY Vmess None TLS     : 80"
+echo "   - XRAY Vless TLS          : 443"
+echo "   - XRAY Vless None TLS     : 80"
+echo "   - Trojan GRPC             : 443"
+echo "   - Trojan WS               : 443"
+echo ""
+echo "   >>> Server Information"
+echo "   - Timezone                : Asia/Jakarta (GMT +7)"
+echo "   - Fail2Ban                : [ON]"
+echo "   - IPtables                : [ON]"
+echo "   - Auto-Reboot             : [ON] jam ${aureb}:00 ${gg} GMT+7"
+echo "   - IPv6                    : [OFF]"
+echo ""
+echo "   >>> About"
+echo "   - Script By               : DevCulture VPN STORE"
+echo "   - Contact                 : wa.me/087726917005"
+echo "=============-[DevCulture]-==============="
 echo ""
 rm -f /root/setup.sh 2>/dev/null
 secs_to_human "$(($(date +%s) - ${start}))"
