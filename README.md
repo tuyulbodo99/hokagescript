@@ -1,104 +1,127 @@
 <div align="center">
 
-<img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=700&size=24&pause=1000&color=9B59B6&center=true&vCenter=true&width=600&lines=HokageScript;DevCulture+Menu+%26+Service+Suite;Part+of+DevCulture+Ecosystem" alt="Typing SVG" />
+<img src="https://raw.githubusercontent.com/tuyulbodo99/devculture-vps/main/assets/cyberpunk-typing.png" width="100%" alt="DevCulture - Cyberpunk Hacker" />
 
 <br/>
 
-[![Part of DevCulture](https://img.shields.io/badge/ecosystem-DevCulture-9b59b6?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/tuyulbodo99)
-[![Shell](https://img.shields.io/badge/shell-bash-1a1a2e?style=for-the-badge&logo=gnubash&logoColor=white)](https://github.com/tuyulbodo99/hokagescript)
-[![OS](https://img.shields.io/badge/OS-Ubuntu%20%7C%20Debian-2c2c54?style=for-the-badge&logo=linux&logoColor=white)](https://github.com/tuyulbodo99/hokagescript)
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=700&size=28&pause=1000&color=A855F7&center=true&vCenter=true&width=600&lines=DevCulture+Script+Menu;SSH+%2B+VPN+Service+Manager;Ubuntu+22.04+Ready;Multi+Protocol+Support)](https://git.io/typing-svg)
+
+<br/>
+
+![GitHub Stars](https://img.shields.io/github/stars/tuyulbodo99/hokagescript?style=for-the-badge&color=a855f7&labelColor=0d0d0d)
+![Platform](https://img.shields.io/badge/Platform-Ubuntu%2022.04-a855f7?style=for-the-badge&logo=ubuntu&logoColor=white&labelColor=0d0d0d)
+![Shell](https://img.shields.io/badge/Shell-Bash%205-7c3aed?style=for-the-badge&logo=gnubash&logoColor=white&labelColor=0d0d0d)
 
 </div>
 
 ---
 
-## ⚡ Install — Satu Perintah, Langsung Jalan
+<div align="center">
 
-> **Copy → Paste → Enter. Selesai.**
+### 🚀 ONE-CLICK INSTALL
 
 ```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/tuyulbodo99/hokagescript/main/setup.sh)
 ```
 
-### 🔄 Update Script
-
-```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/tuyulbodo99/hokagescript/main/update/update.sh)
-```
+</div>
 
 ---
 
-## 🟣 Overview
+## 📦 Fitur
 
-**HokageScript** adalah komponen menu dan service management dari ekosistem DevCulture. Menyediakan menu interaktif lengkap untuk manajemen SSH, Xray, VPN, bot, backup, dan monitoring VPS.
+<table>
+<tr>
+<td width="50%">
 
-> 🔗 **Terhubung penuh dengan ekosistem DevCulture** — disinkronkan otomatis via `sync.sh`
+**🔐 Layanan SSH**
+- Buat & kelola akun SSH
+- Multi-port: 22, 109, 143
+- WebSocket HTTP/HTTPS
+- Config HTTP Injector siap pakai
+- Auto expire & multi-login limit
+
+</td>
+<td width="50%">
+
+**🌐 Layanan VPN**
+- OpenVPN (TCP/UDP)
+- SlowDNS
+- Shadowsocks
+- WireGuard
+- V2Ray / Xray
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+**⚡ Menu Utama**
+- Dashboard sistem real-time
+- Manajemen user semua protokol
+- Monitor bandwidth & koneksi
+- Backup & restore otomatis
+
+</td>
+<td width="50%">
+
+**🛡️ Keamanan**
+- Sistem ijin berbasis GitHub
+- Anti brute-force
+- SSL/TLS support
+- BBR TCP optimization
+
+</td>
+</tr>
+</table>
+
+---
+
+## 🛠️ Perintah
+
+### Install Script Menu
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/tuyulbodo99/hokagescript/main/setup.sh)
+```
+
+### Akses Menu Setelah Install
+```bash
+dc
+# atau
+devculture
+```
+
+### Update Script
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/tuyulbodo99/hokagescript/main/update.sh)
+```
 
 ---
 
 ## 🌐 Ekosistem DevCulture
 
-| Repo | Fungsi | One-Click Install |
-|------|--------|-------------------|
-| [`devculture-vps`](https://github.com/tuyulbodo99/devculture-vps) | 🏠 Core installer | `bash <(curl -fsSL https://raw.githubusercontent.com/tuyulbodo99/devculture-vps/main/install.sh)` |
-| **[`hokagescript`](https://github.com/tuyulbodo99/hokagescript)** | ⚙️ **Menu scripts** ← ini | `bash <(curl -fsSL https://raw.githubusercontent.com/tuyulbodo99/hokagescript/main/setup.sh)` |
-| [`vpnscript`](https://github.com/tuyulbodo99/vpnscript) | 🔒 VPN installer | `bash <(curl -fsSL https://raw.githubusercontent.com/tuyulbodo99/vpnscript/main/premi.sh)` |
-| [`vps-script`](https://github.com/tuyulbodo99/vps-script) | 🔧 SSH tunnel | `bash <(curl -fsSL https://raw.githubusercontent.com/tuyulbodo99/vps-script/main/install)` |
-| [`ijin`](https://github.com/tuyulbodo99/ijin) | 🛡️ License DB | `bash <(curl -fsSL https://raw.githubusercontent.com/tuyulbodo99/ijin/main/check-ijin.sh)` |
+| Repository | Fungsi |
+|------------|--------|
+| 🟣 [devculture-vps](https://github.com/tuyulbodo99/devculture-vps) | Core Panel + SSH + WebSocket |
+| 🟣 [hokagescript](https://github.com/tuyulbodo99/hokagescript) | Menu Layanan & Services |
+| 🟣 [vpnscript](https://github.com/tuyulbodo99/vpnscript) | Full VPN Installer |
+| 🟣 [vps-script](https://github.com/tuyulbodo99/vps-script) | SSH Tunnel Setup |
+| 🟣 [ijin](https://github.com/tuyulbodo99/ijin) | Sistem Lisensi & Perizinan |
 
 ---
 
-## 🔄 Sync Semua Komponen
+## 🖥️ Persyaratan
 
-```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/tuyulbodo99/devculture-vps/main/sync.sh)
-```
-
----
-
-## 📦 Komponen
-
-| Direktori | Fungsi |
-|-----------|--------|
-| `ssh/` | SSH & WebSocket setup, multi-port |
-| `xray/` | Xray core installer (VMess/VLess/Trojan) |
-| `websocket/` | WebSocket & Nginx config |
-| `backup/` | Backup & restore data VPS |
-| `update/` | Script update semua menu service |
-| `corn/` | Cron jobs & scheduler |
-| `setup.sh` | 🚀 Installer utama (one-click) |
-| `dependencies.sh` | Instalasi paket dependensi |
-
----
-
-## 🛡️ Sistem Ijin
-
-Script dilindungi oleh sistem lisensi DevCulture berbasis IP:
-
-```bash
-# Database ijin:
-https://raw.githubusercontent.com/tuyulbodo99/ijin/main/youtube
-```
-
-VPS harus terdaftar. Hubungi admin untuk registrasi.
-
----
-
-## 🔧 Requirements
-
-| Item | Detail |
-|------|--------|
-| OS | Debian 10/11/12 · Ubuntu 20/22 |
-| Akses | **Root** |
-| Arch | x86_64 |
+| OS | RAM | Storage | Akses |
+|----|-----|---------|-------|
+| Ubuntu 20.04 / 22.04 LTS | Min 512 MB | Min 5 GB | Root |
 
 ---
 
 <div align="center">
 
-[![Telegram](https://img.shields.io/badge/Order%20%26%20Support-@devculturebot-9b59b6?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/devculturebot)
-[![GitHub](https://img.shields.io/badge/GitHub-tuyulbodo99-1a1a2e?style=for-the-badge&logo=github&logoColor=white)](https://github.com/tuyulbodo99)
+**DevCulture VPS Store** · [github.com/tuyulbodo99](https://github.com/tuyulbodo99) · [@devculturebot](https://t.me/devculturebot)
 
-<sub>© 2024 DevCulture VPS Store · Part of <a href="https://github.com/tuyulbodo99">tuyulbodo99</a> Ecosystem</sub>
+![Footer](https://capsule-render.vercel.app/api?type=waving&color=a855f7&height=80&section=footer)
 
 </div>
